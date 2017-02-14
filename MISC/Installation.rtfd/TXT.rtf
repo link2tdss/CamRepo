@@ -1,0 +1,563 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fmodern\fcharset0 Courier-Oblique;\f4\fnil\fcharset0 Menlo-Bold;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue233;\red0\green0\blue0;}
+\margl1440\margr1440\vieww25400\viewh16200\viewkind0
+\deftab720
+\pard\pardeftab720\sa321
+
+\f0\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+How To Install Linux, Apache, MySQL, PHP (LAMP) stack on Debian\
+\pard\pardeftab720
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Posted Oct 4, 2012 484.6k views {\field{\*\fldinst{HYPERLINK "https://www.digitalocean.com/community/tags/debian?type=tutorials"}}{\fldrslt \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 Debian}} \
+\
+\pard\pardeftab720\sa280
+
+\b\fs28 \cf0 \expnd0\expndtw0\kerning0
+About LAMP\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+LAMP stack is a group of open source software used to get web servers up and running. The acronym stands for Linux, Apache, MySQL, and PHP. Since the virtual private server is already running Debian, the linux part is taken care of. Here is how to install the rest.\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Set Up\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Before running through the steps of this tutorial, make sure that all of your repositories are up to date:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+apt-get update\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+With that completed, go ahead and start installing the LAMP server.\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Step One\'97Install Apache\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Apache is a free open source software which runs over 50% of the world\'92s web servers.\
+To install apache, open terminal and type in these commands:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+apt-get install apache2\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+That\'92s it. To check if Apache is installed on your VPS, direct your browser to your server\'92s IP address (eg. http://12.34.56.789). The page should display the words \'93It works!" like {\field{\*\fldinst{HYPERLINK "https://assets.digitalocean.com/tutorial_images/333VJ.png"}}{\fldrslt \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 this}}.\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+How to Find your Server\'92s IP address\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+You can run the following command to reveal your VPS's IP address.\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+ifconfig eth0 | grep inet | awk '\{ print $2 \}'\
+\pard\pardeftab720
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Step Two\'97Install MySQL\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+MySQL is a widely-deployed database management system used for organizing and retrieving data.\
+To install MySQL, open terminal and type in these commands:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+apt-get install mysql-server\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+During the installation, MySQL will ask you to set a root password. If you miss the chance to set the password while the program is installing, it is very easy to set the password later from within the MySQL shell.\
+Finish up by running the MySQL set up script:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+ mysql_secure_installation\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+The prompt will ask you for your current root password.\
+Type it in.\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+Enter current password for root (enter for none): \
+OK, successfully used password, moving on...\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+Then the prompt will ask you if you want to change the root password. Go ahead and choose N and move on to the next steps.\
+It\'92s easiest just to say Yes to all the options. At the end, MySQL will reload and implement the new changes.\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+By default, a MySQL installation has an anonymous user, allowing anyone\
+to log into MySQL without having to have a user account created for\
+them.  This is intended only for testing, and to make the installation\
+go a bit smoother.  You should remove them before moving into a\
+production environment.\
+\
+Remove anonymous users? [Y/n] y                                            \
+ ... Success!\
+\
+Normally, root should only be allowed to connect from 'localhost'.  This\
+ensures that someone cannot guess at the root password from the network.\
+\
+Disallow root login remotely? [Y/n] y\
+... Success!\
+\
+By default, MySQL comes with a database named 'test' that anyone can\
+access.  This is also intended only for testing, and should be removed\
+before moving into a production environment.\
+\
+Remove test database and access to it? [Y/n] y\
+ - Dropping test database...\
+ ... Success!\
+ - Removing privileges on test database...\
+ ... Success!\
+\
+Reloading the privilege tables will ensure that all changes made so far\
+will take effect immediately.\
+\
+Reload privilege tables now? [Y/n] y\
+ ... Success!\
+\
+Cleaning up...\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+Once you're done with that you can finish up by installing PHP on your virtual server.\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Step Three\'97Install PHP\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+PHP is an open source web scripting language that is widely use to build dynamic webpages.\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+To install PHP, open terminal and type in this command. 
+\b \expnd0\expndtw0\kerning0
+Note:
+\b0 \expnd0\expndtw0\kerning0
+ If you are on a version earlier than Debian 7, include php5-suhosin as well.\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+ apt-get install php5 php-pear php5-mysql\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+After you answer yes to the prompt twice, PHP will install itself.\
+Finish up by restarting apache:\
+\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+service apache2 restart\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+Congratulations! You now have LAMP stack on your droplet!\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa298
+
+\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Step Four\'97RESULTS: See PHP on your Server\
+\pard\pardeftab720\sa240
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Although LAMP is installed, we can still take a look and see the components online by creating a quick php info page\
+To set this up, first create a new file:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+ nano /var/www/info.php\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+Add in the following line:\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+<?php\
+phpinfo();\
+?>\
+\pard\pardeftab720\sa240
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+Then Save and Exit.\
+Finish up by visiting your php info page (make sure you replace the example ip address with your correct one): http://12.34.56.789/info.php\
+It should look something like this:\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\
+\
+\
+\pard\pardeftab720\sa321
+
+\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+SET UPApache on DEBIAN\
+\pard\pardeftab720
+
+\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Setup
+\fs48 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+sudo apt-get update\
+sudo apt-get install apache2\
+\
+\pard\pardeftab720
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Layout\
+\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+/etc/apache2/\
+|-- apache2.conf\
+|       `--  ports.conf\
+|-- mods-enabled\
+|       |-- *.load\
+|       `-- *.conf\
+|-- conf-enabled\
+|       `-- *.conf\
+|-- sites-enabled\
+|       `-- *.conf\
+\
+\pard\pardeftab720
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Commands For modifying Apache\
+\
+\pard\pardeftab720
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+a2enmod/a2dismod, a2ensite/a2dissite and a2enconf/a2disconf\
+\
+\pard\pardeftab720\sa321
+
+\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+SET UP Motion on DEBIAN
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f0 \cf3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 sudo apt-get install motion\
+sudo apt-get install libv4l-0\
+edit /etc/default/motion and set "start_motion_daemon" to yes \
+edit /etc/motion/motion.conf\
+\cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \
+\pard\pardeftab720\sa321
+
+\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+SET UPApache on Mac OSX\
+\pard\pardeftab720\sa321
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Mac-site Address : http://localhost.etrade.com/\
+Login : user1:myPassword\
+\pard\pardeftab720\sa321
+
+\f0\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Debugging
+\fs48 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\b0\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 sudo apachectl -T\
+\
+
+\f0\b\fs48 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720
+
+\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Location MAC\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+/etc/apache2/\
+\
+\pard\pardeftab720
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Setup\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+https://jason.pureconcepts.net/2015/10/install-apache-php-mysql-mac-os-x-el-capitan/\
+apachectl start\
+cd /etc/apache2/\
+cp httpd.conf httpd.conf.bak\
+vi httpd.conf\
+LoadModule php5_module libexec/apache2/libphp5.so\
+apachectl restart\
+\
+Change DocumentRoot to point to website root\
+\
+\pard\pardeftab720
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Virtualhost Setup
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\
+https://coolestguidesontheplanet.com/set-virtual-hosts-apache-mac-osx-10-10-yosemite/\
+\
+
+\f0\b\fs36 \expnd0\expndtw0\kerning0
+Apache MySQl Auth Setup
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\
+http://httpd.apache.org/docs/current/howto/auth.html\
+\
+For Basic Authentication\
+\
+uncomment \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 LoadModule dbd_module libexec/apache2/mod_dbd.so
+\f1\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\f2\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 LoadModule authn_dbd_module libexec/apache2/mod_authn_dbd.so\
+LoadModule authn_socache_module libexec/apache2/mod_authn_socache.so\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\fs24 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 Add Db details for my sql\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 DBDriver mysql\
+DBDParams host=localhost,dbname=cam_schema,user=cam_schema_admin,pass=Pass$123\
+\
+DBDMin  4\
+DBDKeep 8\
+DBDMax  20\
+DBDExptime 300\
+\
+Configure your directory or Virtual-user for validation\
+\
+\pard\pardeftab720
+
+\f1\fs24 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1   # mod_authn_core and mod_auth_basic configuration\
+  # for mod_authn_dbd\
+  AuthType Basic\
+  AuthName "My Server"\
+\
+  # To cache credentials, put socache ahead of dbd here\
+  # https://httpd.apache.org/docs/trunk/mod/mod_authn_socache.html\
+  AuthBasicProvider socache dbd\
+\
+  # Also required for caching: tell the cache to cache dbd lookups!\
+  AuthnCacheProvideFor dbd\
+  AuthnCacheContext my-server\
+\
+  # mod_authz_core configuration - All valid users are allowed\
+  # Apache require directive https://httpd.apache.org/docs/2.4/mod/mod_authz_core.html#require\
+  Require valid-user\
+  Require method 
+\f3\i \expnd0\expndtw0\kerning0
+get
+\f1\i0 \expnd0\expndtw0\kerning0
+ \
+  # mod_authn_dbd SQL query to authenticate a user\
+  AuthDBDUserPWQuery "SELECT password FROM cam_users WHERE userName = %s"\
+\
+\pard\pardeftab720
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Apache Reverse Proxy setup\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\b0\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 ProxyRequests Off\
+  ProxyPass /restservices/ http://localhost.etrade.com:9080/\
+  ProxyPassReverse /restservices/ http://localhost.etrade.com:9080/\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs36 \cf0 OPENLDAP Apache\
+
+\b0\fs24 https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps
+\b\fs36 \
+\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 sudo apt-get update\
+sudo apt-get install slapd ldap-utils\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa280
+
+\f0\b\fs28 \cf0 \expnd0\expndtw0\kerning0
+Reconfigure slapd\
+\pard\pardeftab720
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+sudo dpkg-reconfigure slapd\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs36 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 Begin Development -  Mac\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\b0\fs22 \cf0 php -S localhost.etrade.com:8085\
+mysql -u cam_schema_admin -D cam_schema -p
+\f1\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720
+
+\f0 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b\fs36 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 Install Mail program -  PEAR\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f2\b0\fs22 \cf0 \
+https://jason.pureconcepts.net/2012/10/install-pear-pecl-mac-os-x/\
+
+\f4\b Optional Features to consider
+\f2\b0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 PEAR: Optional feature webinstaller available (PEAR's web-based installer)\
+PEAR: Optional feature gtkinstaller available (PEAR's PHP-GTK-based installer)\
+PEAR: Optional feature gtk2installer available (PEAR's PHP-GTK2-based installer)\
+PEAR: To install optional features use "pear install pear/PEAR#featurename"\
+\
+WARNING!  The include_path defined in the currently used php.ini does not\
+contain the PEAR PHP directory you just specified:\
+</usr/local/pear/share/pear>\
+If the specified directory is also not in the include_path used by\
+your scripts, you will have problems getting any PEAR packages working.\
+\
+Create a new php.ini file, by copying and editing the php.ini.default in the /etc location. \
+Change the error logging options and the include path.\
+\
+
+\f4\b https://pear.php.net/manual/en/installation.checking.php
+\f2\b0 \
+\
+\pard\pardeftab720
+
+\f0\fs24 \cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec3 First, check where PEAR installs 
+\f1 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 .php
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  files: \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f2\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 pear config-show\
+pear install Mail\
+\pard\pardeftab720
+
+\f0\fs24 \cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec3 pear install Mail_Mime
+\f2\fs22 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs36 \cf0 \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b\fs36 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 Feature Sets\
+\
+PHP Namespaces\
+PHP Classes\
+\
+user management
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b0 \cf0 \expnd0\expndtw0\kerning0
+1. Able to add/edit users (Add user feeds).\
+2. Able to reset user passwords.\
+3. Users able to reset there own passwords (unprotected resource, takes user password and updates)\
+4. add camera to users.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b\fs36 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 administration\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 1) Stop/Start a camera\
+2) add/remove a camera (need dynamic apache routes for forwarding. Security concerns for url hijacking/ injection.\
+
+\b \expnd0\expndtw0\kerning0
+3) \
+\
+Cameras\
+
+\b0 \expnd0\expndtw0\kerning0
+1) View life feed.\
+2) Dynamically add more camera feeds to the page - add image tags through jquery.\
+\
+\
+need to hide the camera url,  dynamic url for cameras.}

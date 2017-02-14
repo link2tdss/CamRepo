@@ -1,0 +1,62 @@
+======CONFIGURE PHP ON APACHE===========
+
+--CONFIGURE MYSQL TO WORK WITH APACHE----
+sudo apt-get install php5-mysqlnd
+
+=======INSTALL MYSQL ON DEBIAN===========
+
+
+
+=====MYSQL Login=========
+
+mysql -u root -p
+mysql -u cam_schema_admin
+show databases;
+connect cam_schema;
+
+==========SCP Command to copy files=============
+scp -r ~/TARUN/CamRoot pi@192.168.1.6:~/CamRoot
+
+========PHP server============
+php -S 0.0.0.0:8000
+
+===========FTP On Debian===========
+https://wiki.debian.org/vsftpd
+apt-get install vsftpd
+---STOP FTP---
+sudo /etc/init.d/vsftpd stop
+
+---START FTP---
+sudo /etc/init.d/vsftpd start
+
+---Configure FTP---
+sudo vi /etc/vsftpd.conf.
+
+==========CONFIGURE APACHE ON DEBIAN=================
+
+---STOP APACHE---
+sudo apachectl stop
+
+---START APACHE---
+sudo apachectl start
+
+---APACHE SECURITY/SETUP---
+All directives placed in the /etc/apache2/sites-enabled
+###NOT SURE ABOUT THE NEED FOR APACHE DIRECTORY DIRECTIVE IN THE ‘APACHE2.CONF’. NEED CLARITY #########
+
+---APACHE LOG FILE LOCATION---
+/var/log/apache2
+
+===========CONFIGURE MAIL ON PHP===================
+https://www.digitalocean.com/community/tutorials/how-to-use-gmail-or-yahoo-with-php-mail-function
+
+apt-get install msmtp
+vi ~/.msmtprc
+
+---CONFIGURE PHP---
+locate the php.ini file, based on running the phpinfo() fucntion in a php file.
+sendmail_path = "/usr/bin/msmtp -C /etc/.msmtp_php --logfile ~/CamRoot/log/msmtp.log -a yahoo -t"  
+
+
+
+
