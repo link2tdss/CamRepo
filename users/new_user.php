@@ -20,6 +20,7 @@ $( "#newUsersForm" ).submit(function( event ) {
   }).fail(function( data ) {
 	    var result = jQuery.parseJSON(data.responseText);
 	  $.each(result, function(key, value){
+	  $("#"+key).parent().after("");
 		  $("#"+key).parent().after("<span style='color:red'> *" + value + "</span>");
 		});
 	  });
@@ -29,13 +30,15 @@ $( "#newUsersForm" ).submit(function( event ) {
   $( function() {
     $( "#selectable" ).selectable({
       stop: function() {
-        var result = $( "#select-result" ).empty();
-        $( ".ui-selected", this ).each(function() {
-        	console.log('Elem selected ' + this);
-        	console.log($(this).attr('value'));
-          //var val = $( "#selectable li" ).index( this );
-          //result.append( " #" + ( index + 1 ) );
+        var result = "";
+        $( ".ui-selected", this ).each(function(index) {
+        	if (index > 0) {
+        		result = result + "," + $(this).attr('value');
+        	}else{
+        		result = $(this).attr('value');
+        	}
         });
+        $( "#camsSelected" ).val(result);
       }
     });
   } );
@@ -67,8 +70,8 @@ $( "#newUsersForm" ).submit(function( event ) {
 		</table>
 		
 		<p id="feedback">
-<span>You've selected:</span> <span id="select-result">none</span>.
-<span id="appended-elem"> --- </span>
+<input type="hidden" id="camsSelected" name="camsSelected" />
+<span> Select the Camera(s) the user is allowed to access. </span>
 </p>
 
 <?php
@@ -87,12 +90,15 @@ $( "#newUsersForm" ).submit(function( event ) {
 			/* bind result variables */
 			$stmt->bind_result($cameraID, $cameraDescription);
 
-			echo '<ol id="selectable"  value="WWW">';
+			//echo '<ol id="selectable"  value="WWW">';
+			echo '<div id="selectable">';
 			/* fetch values */
 			while ($stmt->fetch()) {
-				echo '<li class="ui-widget-content" value="' . $cameraID . '">' . $cameraDescription . '</li>';
+				//echo '<li class="ui-widget-content" value="' . $cameraID . '">' . $cameraDescription . '</li>';
+				echo '<span class="ui-widget-content" value= '. $cameraID . '>' . $cameraDescription . '</span>';
 			}
-			echo '</ol>';
+			//echo '</ol>';
+			echo '</div>';
 			/* close statement */
 			$stmt->close();
 		}

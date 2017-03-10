@@ -50,7 +50,7 @@
 				
 				if(validateOTP($row['email_verify'], $verifyChain) && isValidDate( $row['email_verify_timestamp'])){
 			*/
-			if(validateOTP($row['email_verify'], $verifyChain))){
+			if(validateOTP($row['email_verify'], $verifyChain)){
 				if (! ($stmt = $mysqli->prepare ( "UPDATE cam_users set emailVerified = ? where userID = ?" ))) {
 					return "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 				}

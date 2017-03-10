@@ -4,11 +4,11 @@
 	include $_SERVER["DOCUMENT_ROOT"] . '/mailtemplates/userverification.php';
 	// define variables and set to empty values
 	$error_arr = array();
-	$fname = $lname = $email = $uid = $password = "";
-
+	$fname = $lname = $email = $uid = $password = $camsSelected = "";
+	
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	  if (empty($_POST["fname"])) {
-	    $error_arr["fname"] = "First Name is required123";
+	    $error_arr["fname"] = "First Name is required";
 	  } else {
 	    $fname = test_input($_POST["fname"]);
 	    // check if name only contains letters and whitespace
@@ -54,6 +54,14 @@
 	    }
 	  }
 	  
+	  if (empty($_POST["camsSelected"])) {
+	    $error_arr["camsSelected"] = "Please assign atleast one camera.";
+	  } else {
+	    $camsSelected = test_input($_POST["camsSelected"]);
+	    // check if name only contains letters and whitespace
+	    
+	  }
+	  
 	  
 	  if (count($error_arr) > 0){
 	  	header("HTTP/1.0 400 Bad Request");
@@ -61,7 +69,7 @@
 	  	exit;
 	  }else{
 	  	include '../private/conn_db.php';
-	  	$status = saveUser($uid, $password, $fname, $lname, $email);
+	  	$status = saveUser($uid, $password, $fname, $lname, $email, $camsSelected);
 	  	if(empty($status)){
 	  		header("HTTP/1.0 200 Success");
 	  	}else{
@@ -109,7 +117,7 @@
 	  return $data;
 	}
 
-	function saveUser($uid, $password, $fname, $lname, $email) {
+	function saveUser($uid, $password, $fname, $lname, $email, $camsSelected) {
 		$mysqli = getDbConn ();
 		if(is_null($mysqli)){
 			echo  "<br>". 'Cant do it boss';
@@ -131,6 +139,29 @@
 			
 			/* explicit close recommended */
 			$stmt->close ();
+			
+			if (! ($stmt1 = $mysqli->prepare ( "INSERT INTO cam_user_assignment(cameraID,userID) VALUES (?,?)" ))) {
+				return "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+			}
+			
+			
+			foreach (explode(",", $camsSelected) as $cameraID) {
+				if (! $stmt1->bind_param ( "ss", $cameraID, $uid)) {
+				return "Binding parameters failed: (" . $stmt1->errno . ") " . $stmt1->error;
+				}
+			
+				if (! $stmt1->execute ()) {
+					return "Execute failed: (" . $stmt1->errno . ") " . $stmt1->error;
+				}
+			}
+
+			
+			
+			
+			/* explicit close recommended */
+			$stmt1->close ();
+			
+			
 			sendVerificationMail($email,urlencode($otp),$uid);
 			return "";
 		}

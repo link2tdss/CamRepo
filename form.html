@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	
+	$("#sbmt").click(function() {
+		    alert('1122');
+		/*var postVal = $("#text1").val();
+		
+			$.post( "http://192.168.1.6/echo.php",$("#reg-form").serialize(),function(receviedPayload) {
+						
+				var obj = jQuery.parseJSON( receviedPayload );
+				$('#dataDisplay').append(obj.name);
+					  });*/
+			var form = $('#reg-form');		  
+			var request = $.ajax({ 
+							url:"http://192.168.1.6/echo.php",
+							type: "POST",
+							data: form.serialize(),
+							
+							
+							})
+						.done(function( receviedPayload ){
+								var obj = jQuery.parseJSON( receviedPayload );
+								$( "#dataDisplay" ).append(obj.name);
+								alert('111');
+									});			  
+				   
+			});
+		});
+</script>
+
+<body>
+<form id="reg-form" method="post" action="http://192.168.1.6/echo.php">
+  First name:<br>
+  <input type="text" name="name" />
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname"/ >
+  <br><br>
+ <input type="submit" name="button" id="sbmt" value="Submit"/>
+</form> 
+
+
+
+	<div id="dataDisplay">
+	
+	</div>
+	
+	
+	
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	
+	$("button").click(function() {
+		
+		var postVal = $("#text1").val();
+		
+		/*$.post( "http://192.168.1.6/echo.php",{ name: postVal },function(receviedPayload) {
+						
+			var obj = jQuery.parseJSON( receviedPayload );
+						 $('#dataDisplay').append(obj.name);
+					  }
+				   );*/
+				   
+		var request = $.ajax({ 
+							url:"http://192.168.1.6/echo.php",
+							method: "POST",
+							data: { name : postVal },
+							dataType: "html"
+							})
+						.done(function( receviedPayload ){
+								var obj = jQuery.parseJSON( receviedPayload );
+								$( "#dataDisplay" ).append(obj.name);
+									});	
+	});
+
+});
+
+
+</script>
+
+<body>
+
+	<div id="dataDisplay">
+	
+	</div>
+	<input type="text" id="text1"/>
+	<button>name</button>
+	
+	
+</body>
+
+</html>

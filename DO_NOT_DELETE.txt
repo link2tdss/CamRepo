@@ -1,3 +1,11 @@
+==============NEED TO DISABLE TOMCAT ON PI=====================
+sudo service tomcat8 stop
+
+need to remove it from starting automatically
+
+===============================================================
+
+
 ======CONFIGURE PHP ON APACHE===========
 
 --CONFIGURE MYSQL TO WORK WITH APACHE----
