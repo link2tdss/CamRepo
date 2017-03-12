@@ -1,5 +1,5 @@
 <?php
-	include 'conn_db.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/private/conn_db.php';
 	$mysqli = getDbConn ();
 	if(is_null($mysqli)){
 		echo  "<br>". 'Cant do it boss';

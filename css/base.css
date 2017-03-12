@@ -56,3 +56,4 @@ ul.topnav li.icon {display: none;}
 #selectable .ui-selected { background: #F39814; color: white; margin: 5; padding: 5;}
 #selectable { list-style-type: none; margin: 5; padding: 5; width: 100%; }
 #selectable .ui-selectee { margin: 5; padding: 5; }
+.ui-dialog .ui-state-error { padding: .3em; }
