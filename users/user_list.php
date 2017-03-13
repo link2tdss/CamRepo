@@ -23,12 +23,15 @@ $(document).ready(function() {
                 extend: "selectedSingle",
                 text: "EDIT",
                 action: function ( e, dt, node, config ) {
-                    // Immediately add `250` to the value of the salary and submit
-                    //console.log(table.row( { selected: true } ).data());
-                    getUserData();
+                    // Get the userID from the data array.
+                    userId = table.row( { selected: true } ).data()[0];
+                    getUserData(userId);
                 }
             }
-        ]
+        ],
+        "columnDefs": [
+    		{ "visible": false, "targets": 0 }
+  		]
     } );
     
     dialog = $( "#dialog-form" ).dialog({
@@ -72,8 +75,7 @@ $(document).ready(function() {
 		});
     }
     
-    function getUserData(){
-    	var userId = "link2tdss";
+    function getUserData(userId){
     	$.ajax({
   			url: "users/edit_user.php",
   			data: {userId: userId}
@@ -123,16 +125,18 @@ $(document).ready(function() {
 <table id="users" class="display" width="100%" cellspacing="0">
         <thead>
             <tr>
+                <th>userId</th>
                 <th>Name</th>
                 <th>email</th>
-                <th>userId</th>
+                <th>userName</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
+                <th>userId</th>
                 <th>Name</th>
                 <th>email</th>
-                <th>userId</th>
+                <th>userName</th>
             </tr>
         </tfoot>
     </table>

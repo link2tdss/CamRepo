@@ -1,5 +1,9 @@
 <?php
 	
+	include  $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
+	Logger::configure( $_SERVER["DOCUMENT_ROOT"] . '/config.xml');
+	$log = Logger::getLogger('myLogger');
+	
 	include '../private/ssl/generateOTP.php';
 	include $_SERVER["DOCUMENT_ROOT"] . '/mailtemplates/userverification.php';
 	// define variables and set to empty values
@@ -122,7 +126,10 @@
 		if(is_null($mysqli)){
 			echo  "<br>". 'Cant do it boss';
 		}else {
-			list ($rand, $otp) = generateOTP();
+			
+			$otpHandler = new OTPHandler();
+			list ($rand, $otp) = $otpHandler->generateOTP();
+			
 			if (! ($stmt = $mysqli->prepare ( "INSERT INTO cam_users(userID,userName,password,firstName,lastName,email,email_verify,email_verify_timestamp,emailVerified) VALUES (?,?,?,?,?,?,?,?,?)" ))) {
 				return "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 			}
