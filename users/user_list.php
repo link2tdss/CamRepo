@@ -21,11 +21,20 @@ $(document).ready(function() {
             'pdfHtml5',
             {
                 extend: "selectedSingle",
-                text: "EDIT",
+                text: "Edit",
                 action: function ( e, dt, node, config ) {
                     // Get the userID from the data array.
                     userId = table.row( { selected: true } ).data()[0];
                     getUserData(userId);
+                }
+            },
+            {
+                extend: "selectedSingle",
+                text: "Disable",
+                action: function ( e, dt, node, config ) {
+                    // Get the userID from the data array.
+                    userId = table.row( { selected: true } ).data()[0];
+                    disableUser(userId);
                 }
             }
         ],
@@ -75,6 +84,14 @@ $(document).ready(function() {
 		});
     }
     
+     function disableUser(userId){
+    	//console.log($("#userId").val());
+    	$.post( "users/disable_user.php", {userId : userId}).done(function() {
+    		//console.log('finished');
+  			table.ajax.reload();
+		});
+    }
+    
     function getUserData(userId){
     	$.ajax({
   			url: "users/edit_user.php",
@@ -104,19 +121,47 @@ $(document).ready(function() {
 		
     }
     
-    $( "#selectable" ).selectable({
-      stop: function() {
-        var result = "";
-        $( ".ui-selected", this ).each(function(index) {
-        	if (index > 0) {
-        		result = result + "," + $(this).attr('value');
-        	}else{
-        		result = $(this).attr('value');
-        	}
-        });
-        $( "#camsSelected" ).val(result);
-      }
-    });
+    var selectes = [];
+	var unselectes = [];
+	$( "#selectable" ).selectable({
+		unselecting: function(event, ui) {
+			console.log('calling unselecting');
+			$( ".ui-unselecting", this ).each(function(index) {
+				var id = $(this).attr('id');
+				if(selectes.indexOf(id) == -1){
+					selectes.push(id);
+					console.log('adding ' + id  + ' to selecting array');
+				}			
+			});
+		},
+		stop: function(){
+			console.log('calling stop');
+			selectes.forEach(function(item, index){
+					$('#'+item).addClass('ui-selected');
+				});
+			unselectes.forEach(function(item, index){
+				$('#'+item).removeClass('ui-selected');
+			});
+			selectes = [];
+			unselectes = [];
+		},
+		selecting: function(){
+			console.log('calling selecting');
+			console.log('potential selected elements ' + selectes.toString());
+			$( ".ui-selecting", this ).each(function() {
+				var id = $(this).attr('id');
+				console.log('checkng if ' + id + ' needs to be removed');
+				index = selectes.indexOf(id);
+				console.log(' Index of ' + id + ' in selecting array is ' + index );
+				if(index > -1){
+					console.log('removing ' + id + ' from selecting array');
+					unselectes.push(id);
+				}
+			});
+			console.log('potential selected elements now ' + selectes.toString());
+		}
+	});
+	
  
 } );
 
@@ -129,6 +174,7 @@ $(document).ready(function() {
                 <th>Name</th>
                 <th>email</th>
                 <th>userName</th>
+                <th>Active</th>
             </tr>
         </thead>
         <tfoot>
@@ -137,6 +183,7 @@ $(document).ready(function() {
                 <th>Name</th>
                 <th>email</th>
                 <th>userName</th>
+                <th>Active</th>
             </tr>
         </tfoot>
     </table>
@@ -197,6 +244,18 @@ $(document).ready(function() {
 				}
 
 			?>
+			
+			
+				<p>
+				<label for="checkbox-nested-1">Active
+				<input class="userOption" type="checkbox" name="checkbox-nested-1" id="checkbox-nested-1">
+				</label>
+				<br>
+				<br>
+				<label for="checkbox-nested-2">Send Verification Email
+				<input class="userOption" type="checkbox" name="checkbox-nested-2" id="checkbox-nested-2">
+				</label>
+				</p>
 			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
 		</form>
 	</div>

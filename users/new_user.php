@@ -1,47 +1,72 @@
 
 <script type="text/javascript">
-// Attach a submit handler to the form
-$( "#newUsersForm" ).submit(function( event ) {
+	// Attach a submit handler to the form
+	$( "#newUsersForm" ).submit(function( event ) {
  
-  // Stop form from submitting normally
-  event.preventDefault();
+	  // Stop form from submitting normally
+	  event.preventDefault();
  
-  // Get some values from elements on the page:
-  var $form = $( this );
-    var url = $form.attr( "action" );
-  console.log( $( this ).serialize() );
-  // Send the data using post
-  var posting = $.post( url, $( "#newUsersForm" ).serialize()).done(function( data ) {
-    //var content = $( data ).find( "#content" );
-   // alert(" " + content);
-    //$( "#result" ).empty().append(" " + content );
-    alert("Success");
-    $("#bodyContainer").load("users/users.php");
-  }).fail(function( data ) {
-	    var result = jQuery.parseJSON(data.responseText);
-	  $.each(result, function(key, value){
-	  $("#"+key).parent().after("");
-		  $("#"+key).parent().after("<span style='color:red'> *" + value + "</span>");
-		});
-	  });
-});
+	  // Get some values from elements on the page:
+	  var $form = $( this );
+		var url = $form.attr( "action" );
+	  console.log( $( this ).serialize() );
+	  // Send the data using post
+	  var posting = $.post( url, $( "#newUsersForm" ).serialize()).done(function( data ) {
+		//var content = $( data ).find( "#content" );
+	   // alert(" " + content);
+		//$( "#result" ).empty().append(" " + content );
+		alert("Success");
+		$("#bodyContainer").load("users/users.php");
+	  }).fail(function( data ) {
+			var result = jQuery.parseJSON(data.responseText);
+		  $.each(result, function(key, value){
+		  $("#"+key).parent().after("");
+			  $("#"+key).parent().after("<span style='color:red'> *" + value + "</span>");
+			});
+		  });
+	});
 
 
-  $( function() {
-    $( "#selectable" ).selectable({
-      stop: function() {
-        var result = "";
-        $( ".ui-selected", this ).each(function(index) {
-        	if (index > 0) {
-        		result = result + "," + $(this).attr('value');
-        	}else{
-        		result = $(this).attr('value');
-        	}
-        });
-        $( "#camsSelected" ).val(result);
-      }
-    });
-  } );
+  	var selectes = [];
+	var unselectes = [];
+	$( "#selectable" ).selectable({
+		unselecting: function(event, ui) {
+			console.log('calling unselecting');
+			$( ".ui-unselecting", this ).each(function(index) {
+				var id = $(this).attr('id');
+				if(selectes.indexOf(id) == -1){
+					selectes.push(id);
+					console.log('adding ' + id  + ' to selecting array');
+				}			
+			});
+		},
+		stop: function(){
+			console.log('calling stop');
+			selectes.forEach(function(item, index){
+					$('#'+item).addClass('ui-selected');
+				});
+			unselectes.forEach(function(item, index){
+				$('#'+item).removeClass('ui-selected');
+			});
+			selectes = [];
+			unselectes = [];
+		},
+		selecting: function(){
+			console.log('calling selecting');
+			console.log('potential selected elements ' + selectes.toString());
+			$( ".ui-selecting", this ).each(function() {
+				var id = $(this).attr('id');
+				console.log('checkng if ' + id + ' needs to be removed');
+				index = selectes.indexOf(id);
+				console.log(' Index of ' + id + ' in selecting array is ' + index );
+				if(index > -1){
+					console.log('removing ' + id + ' from selecting array');
+					unselectes.push(id);
+				}
+			});
+			console.log('potential selected elements now ' + selectes.toString());
+		}
+	});
 </script>
 
 
@@ -95,7 +120,7 @@ $( "#newUsersForm" ).submit(function( event ) {
 			/* fetch values */
 			while ($stmt->fetch()) {
 				//echo '<li class="ui-widget-content" value="' . $cameraID . '">' . $cameraDescription . '</li>';
-				echo '<span class="ui-widget-content" value= '. $cameraID . '>' . $cameraDescription . '</span>';
+				echo '<span class="ui-widget-content" value = '. $cameraID . ' id = ' . $cameraID . '>' . $cameraDescription . '</span>';
 			}
 			//echo '</ol>';
 			echo '</div>';
