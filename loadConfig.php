@@ -1,3 +1,3 @@
 <?php
-	$GLOBALS['HOSTNAME'] = 'http://192.168.1.6';
+	$CONFIG = parse_ini_file("config.ini");
 ?>

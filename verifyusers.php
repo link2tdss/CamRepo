@@ -3,7 +3,7 @@
 
 	include  $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
 	Logger::configure( $_SERVER["DOCUMENT_ROOT"] . '/config.xml');
-	$log = Logger::getLogger('myLogger');
+	static $log = Logger::getLogger('myLogger');
 	
 	include $_SERVER["DOCUMENT_ROOT"] . '/private/conn_db.php';
 	// define variables and set to empty values
