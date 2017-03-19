@@ -1,9 +1,11 @@
 <?php	
-	include 'loadConfig.php';
-	include 'phpinfo.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/loadConfig.php';
+	
 	include  $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
 	Logger::configure( $_SERVER["DOCUMENT_ROOT"] . '/config.xml');
-	$GLOBALS['log'] = Logger::getLogger('myLogger');
+	$log = Logger::getLogger('myLogger');
+	
+	//include 'phpinfo.php';
 	/*$rand = $otp =  "";
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	  if (empty($_POST["name"])) {

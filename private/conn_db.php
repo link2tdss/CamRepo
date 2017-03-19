@@ -1,6 +1,6 @@
 
 <?php
-include  $_SERVER["DOCUMENT_ROOT"] . 'loadConfig.php';
+
 
 function getDbConn() {
 	

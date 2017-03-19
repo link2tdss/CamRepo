@@ -75,13 +75,20 @@ $(document).ready(function() {
     });
     
     function editUser(){
-		
+		$("#overlay").show();
     	//console.log($("#userId").val());
-    	$.post( "users/edit_user.php", $( "#editUserForm" ).serialize()).done(function() {
+    	$.post( "users/edit_user.php", $( "#editUserForm" )
+    	.serialize())
+    	.done(function() {
     		//console.log('finished');
   			table.ajax.reload();
   			dialog.dialog( "close" );
-		});
+  			$("#overlay").hide();
+		})
+		.fail(function( data ) {
+			$("#overlay").hide();
+		  });
+		
     }
     
      function disableUser(userId){
@@ -93,11 +100,12 @@ $(document).ready(function() {
     }
     
     function getUserData(userId){
-    	$.ajax({
+    	$("#overlay").show();
+    	
+		$.ajax({
   			url: "users/edit_user.php",
   			data: {userId: userId}
 		}).done(function(data) {
-			//console.log(data);
   			var result = jQuery.parseJSON(data);
   			$.each(result, function(key, value){
   				//console.log("setting value for " + key + " : " + value);
@@ -113,8 +121,14 @@ $(document).ready(function() {
 						});
   					});
   				}
-	  			$("#"+key).val(value);
+  				var elem = $("#"+key);
+  				if(elem.is(":checkbox") && value == 'true'){
+  					elem.prop('checked',true);
+  				}else{
+  					elem.val(value)
+  				}
 			});
+			$("#overlay").hide();
 			dialog.dialog( "open" );
 	  	});
 		
@@ -162,7 +176,7 @@ $(document).ready(function() {
 		}
 	});
 	
- 
+
 } );
 
 </script>
@@ -247,15 +261,16 @@ $(document).ready(function() {
 			
 			
 				<p>
-				<label for="checkbox-nested-1">Active
-				<input class="userOption" type="checkbox" name="checkbox-nested-1" id="checkbox-nested-1">
+				<label for="active">Active
+				<input class="userOption" type="checkbox" name="userActive" id="userActive">
 				</label>
 				<br>
 				<br>
-				<label for="checkbox-nested-2">Send Verification Email
-				<input class="userOption" type="checkbox" name="checkbox-nested-2" id="checkbox-nested-2">
+				<label for="sendVerification">Send Verification Email
+				<input class="userOption" type="checkbox" name="sendVerification" id="sendVerification">
 				</label>
 				</p>
 			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
 		</form>
 	</div>
+	
