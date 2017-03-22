@@ -39,7 +39,7 @@ function registerCamMenu(){
 function registerUsersMenu(){
 	$('a[href="#users"]').click(function(){
 		unloadMenus();
-	  $("#bodyContainer").load("users/users.php");
+	  $("#bodyContainer").load("usrmgmt/users.php");
 	});
 }
 

@@ -16,7 +16,7 @@
 	   // alert(" " + content);
 		//$( "#result" ).empty().append(" " + content );
 		alert("Success");
-		$("#bodyContainer").load("users/users.php");
+		$("#bodyContainer").load("usrmgmt/users.php");
 	  }).fail(function( data ) {
 			var result = jQuery.parseJSON(data.responseText);
 		  $.each(result, function(key, value){
@@ -70,7 +70,7 @@
 </script>
 
 
-	<form action="users/register_new_user.php" method="POST" id="newUsersForm">
+	<form action="usrmgmt/register_new_user.php" method="POST" id="newUsersForm">
 		<table>
 			<tr>
 				<td><label>First Name:</label></td>

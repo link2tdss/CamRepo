@@ -1,63 +1,64 @@
 
 <?php
 
-	include  $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/loadConfig.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
 	Logger::configure( $_SERVER["DOCUMENT_ROOT"] . '/config.xml');
-	static $log = Logger::getLogger('myLogger');
+	$GLOBALS['log'] = Logger::getLogger('myLogger');
 	
 	include $_SERVER["DOCUMENT_ROOT"] . '/private/conn_db.php';
 	// define variables and set to empty values
 	include $_SERVER["DOCUMENT_ROOT"] . '/private/ssl/generateOTP.php';
 	
 	$userId = $verifyChain =  "";
-	$log->info("Verifing email OTP.");
+	$GLOBALS['log']->info("Verifing email OTP.");
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$userId = $_GET["userId"];
 		$verifyChain = $_GET["verifyChain"];
 		
-		$log->trace("userId " . $userId);
-		$log->trace("verifychain " . $_GET["verifyChain"]);
+		$GLOBALS['log']->trace("userId " . $userId);
+		$GLOBALS['log']->trace("verifychain " . $_GET["verifyChain"]);
 		
 		if (empty($userId)) {
 			$error_arr["userId"] = "User Id is required";
-			$log->error("User Id is required.");
+			$GLOBALS['log']->error("User Id is required.");
 		} else {
 			$userId = test_input($userId);
 			// check if name only contains letters and whitespace
 			if (!preg_match("/^[a-zA-Z0-9]*$/",$userId)) {
 				$error_arr["userId"] = "Only letters and Numbers allowed";
-				$log->error("Only letters and Numbers allowed for userId.");
+				$GLOBALS['log']->error("Only letters and Numbers allowed for userId.");
 			}
 		}
 
 
 		if (empty($verifyChain)) {
 			$error_arr["verifyChain"] = "verifychain is required";
-			$log->error("verifychain is required.");
+			$GLOBALS['log']->error("verifychain is required.");
 		} else {
 			$verifyChain = test_input($verifyChain);
 			// check if name only contains letters and whitespace
 			/*if (!preg_match("/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/",$verifyChain)) {
 				$error_arr["verifyChain"] = "Only letters and Numbers allowed";
-				$log->error("Only letters and Numbers allowed for verifychain.");
+				$GLOBALS['log']->error("Only letters and Numbers allowed for verifychain.");
 			}*/
 		}
 		//$verifyChain = urldecode($verifyChain);
-		$ret = verifyChain($verifyChain, $userId, $log);
+		$ret = verifyChain($verifyChain, $userId, $GLOBALS['log']);
 		if(empty($ret)){
 			echo "<br>". '<h1>You can view your assigned camera here</h1>';
 		} else {
-			$log->error($ret);
+			$GLOBALS['log']->error($ret);
 			echo "<br>". '<h1>Could not verify you email. PLease contact system administrator</h1>';
 		}
 	}
 	
 
-	function verifyChain($verifyChain, $userId, $log){
-		$log->debug("ValIdating email for user " . $userId);
+	function verifyChain($verifyChain, $userId){
+		$GLOBALS['log']->debug("ValIdating email for user " . $userId);
 		$mysqli = getDbConn ();
 		if(is_null($mysqli)){
-			$log->error("could not get database connection.");
+			$GLOBALS['log']->error("could not get database connection.");
 			return "Could not get Database connection ";
 		}else {
 			
@@ -84,7 +85,7 @@
 				
 				return "No data found for user";
 			}
-			$log->debug("ValIdating email for user " . $userId);
+			$GLOBALS['log']->debug("ValIdating email for user " . $userId);
 			//echo 'llll ->>' . $userId . ' ---  RAND  --- ' . $row['email_verify'] . ' --- TIME  ---' . $row['email_verify_timestamp'];
 			/*
 				Not implementing the resend valIdation email for now. 

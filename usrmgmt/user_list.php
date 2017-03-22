@@ -2,11 +2,11 @@
    
     .ui-button-slim { padding: .3em; }
   </style>
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
 	var dialog, form, table;
     table = $('#users').DataTable( {
-        "ajax": 'users/user_data.php',
+        "ajax": 'usrmgmt/user_data.php',
         select: true,
         dom: 'Bfrtip',
         buttons: [
@@ -59,6 +59,18 @@ $(document).ready(function() {
 			{
 			text: "Cancel",
 			click: function() {
+						$("#dialog-form input").each(function() {
+							var elem = $(this);
+							if(elem.is(":checkbox")){
+  								elem.prop('checked',false);
+  							}else{
+  								elem.val("");
+  							}
+							console.log($(this).val());
+						});
+						$( ".ui-selectee").each(function(index) {
+								$(this).removeClass("ui-selected");
+							});
 						dialog.dialog( "close" );
 					}
 			}
@@ -77,7 +89,7 @@ $(document).ready(function() {
     function editUser(){
 		$("#overlay").show();
     	//console.log($("#userId").val());
-    	$.post( "users/edit_user.php", $( "#editUserForm" )
+    	$.post( "usrmgmt/edit_user.php", $( "#editUserForm" )
     	.serialize())
     	.done(function() {
     		//console.log('finished');
@@ -93,7 +105,7 @@ $(document).ready(function() {
     
      function disableUser(userId){
     	//console.log($("#userId").val());
-    	$.post( "users/disable_user.php", {userId : userId}).done(function() {
+    	$.post( "usrmgmt/disable_user.php", {userId : userId}).done(function() {
     		//console.log('finished');
   			table.ajax.reload();
 		});
@@ -103,7 +115,7 @@ $(document).ready(function() {
     	$("#overlay").show();
     	
 		$.ajax({
-  			url: "users/edit_user.php",
+  			url: "usrmgmt/edit_user.php",
   			data: {userId: userId}
 		}).done(function(data) {
   			var result = jQuery.parseJSON(data);
@@ -135,7 +147,21 @@ $(document).ready(function() {
 		
     }
     
-    var selectes = [];
+    $( "#selectable" ).selectable({
+      stop: function() {
+        var result = "";
+        $( ".ui-selected", this ).each(function(index) {
+        	if (index > 0) {
+        		result = result + "," + $(this).attr('value');
+        	}else{
+        		result = $(this).attr('value');
+        	}
+        });
+        $( "#camsSelected" ).val(result);
+      }
+    });
+    
+    /* var selectes = [];
 	var unselectes = [];
 	$( "#selectable" ).selectable({
 		unselecting: function(event, ui) {
@@ -175,7 +201,7 @@ $(document).ready(function() {
 			console.log('potential selected elements now ' + selectes.toString());
 		}
 	});
-	
+	*/
 
 } );
 
@@ -266,7 +292,7 @@ $(document).ready(function() {
 				</label>
 				<br>
 				<br>
-				<label for="sendVerification">Send Verification Email
+				<label for="sendVerification">Send Verification Email123
 				<input class="userOption" type="checkbox" name="sendVerification" id="sendVerification">
 				</label>
 				</p>

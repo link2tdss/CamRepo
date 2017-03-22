@@ -14,8 +14,8 @@
 </script>
 <div id="tabs">
   <ul>
-    <li><a href="users/user_list.php">Users</a></li>
-    <li><a href="users/new_user.php">New User</a></li>
+    <li><a href="usrmgmt/user_list.php">Users</a></li>
+    <li><a href="usrmgmt/new_user.php">New User</a></li>
   </ul>
  
   

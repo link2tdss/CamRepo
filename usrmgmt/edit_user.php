@@ -1,11 +1,13 @@
 <?php
 	include $_SERVER["DOCUMENT_ROOT"] . '/loadConfig.php';
-	include $_SERVER["DOCUMENT_ROOT"] . '/private/conn_db.php';
-	include $_SERVER["DOCUMENT_ROOT"] . '/mailtemplates/userverification.php';
 	include $_SERVER["DOCUMENT_ROOT"] . '/log4php/Logger.php';
-	include $_SERVER["DOCUMENT_ROOT"] . '/private/ssl/generateOTP.php';
 	Logger::configure( $_SERVER["DOCUMENT_ROOT"] . '/config.xml');
 	$GLOBALS['log'] = Logger::getLogger('myLogger');
+	
+	
+	include $_SERVER["DOCUMENT_ROOT"] . '/private/conn_db.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/mailtemplates/userverification.php';
+	include $_SERVER["DOCUMENT_ROOT"] . '/private/ssl/generateOTP.php';
 	
 	// define variables and set to empty values
 	$error_arr = array();
@@ -182,7 +184,7 @@
 				$stmt->close ();
 				
 				$GLOBALS['log']->debug('Sending verification email');
-				sendVerificationMail($email,urlencode($otp),$uid);
+				sendVerificationMail($email,urlencode($otp),$userId);
 			}else{
 				$GLOBALS['log']->debug('Saving user information');
 				if (! ($stmt = $mysqli->prepare ( "UPDATE cam_users set firstName = ?,lastName = ?, email = ?, active = ? WHERE userId = ?" ))) {
